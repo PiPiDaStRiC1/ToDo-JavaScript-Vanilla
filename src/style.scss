@@ -251,6 +251,8 @@ body {
         padding-left: 0;
         border: 0;
         font-size: 1rem;
+        font-family: Josefin+Sans;
+        font-weight: 400;
         color: darken($color: #fff, $amount: 20%);
         border-radius: 0.5rem;
         &:focus {

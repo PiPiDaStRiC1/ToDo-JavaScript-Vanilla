@@ -238,6 +238,8 @@ body {
   padding-left: 0;
   border: 0;
   font-size: 1rem;
+  font-family: JosefinSans;
+  font-weight: 400;
   color: #cccccc;
   border-radius: 0.5rem;
 }
