@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/images/to-do-list.png" type="image/x-icon">
+    <link rel="stylesheet" href="./CSS/style.min.css">
+    <script defer src="./src/app.js"></script>
+    <title>To Do</title>
+</head>
+<body>
+    <main class="main">
+        <article class="todo">
+            <header class="todo__header">
+                <h1 class="todo__header_title">TODO</h1>
+                <button class="todo__header_btn"></button>
+            </header>
+            <div class="todo__add">
+                <div class="todo__mark--add"></div>
+                <input type="text" placeholder="Create a new todo..." class="todo__add_text">
+            </div>
+            <ul class="todos__list">
+                <li class="todo__smth">Add something...</li>
+            </ul>
+            <div class="todos__sort">
+                <p class="todos__sort_left">0 items left</p>
+                <ul class="todos__sort_params">
+                    <li class="todos__sort_params_param activeBtn sort__param--all">All</li>
+                    <li class="todos__sort_params_param sort__param--active">Active</li>
+                    <li class="todos__sort_params_param sort__param--completed">Completed</li>
+                </ul>
+                <p class="todos__sort_clear">Clear Completed</p>
+        </article>
+    </main>
+</body>
+</html>
