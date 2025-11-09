@@ -14,6 +14,8 @@
     const sortCompletedBtn = document.querySelector('.sort__param--completed');
     const sortCompletedClear = document.querySelector('.todos__sort_clear');
     let todoInputs = document.querySelectorAll('.todo__input');
+    let todoMarks = document.querySelectorAll('.todo__mark');
+    let todoTexts = document.querySelectorAll('.todo__text');
     const mediaQueryMobile = window.matchMedia('(min-width: 0px) and (max-width: 468px)');
     const mediaQueryTablet = window.matchMedia('(min-width: 0px) and (max-width: 768px)');
     
@@ -21,9 +23,9 @@
     mediaQueryMobile.addEventListener('change', handleMediaMobile);
     mediaQueryTablet.addEventListener('change', handleMediaTablet);
     todoAddMark.addEventListener('click', addTodo);
-    sortAllBtn.addEventListener('click', sortAll);
-    sortActiveBtn.addEventListener('click', sortActive);
-    sortCompletedBtn.addEventListener('click', sortCompleted);
+    sortAllBtn.addEventListener('click', sort);
+    sortActiveBtn.addEventListener('click', sort);
+    sortCompletedBtn.addEventListener('click', sort);
     sortCompletedClear.addEventListener('click', clearCompleted);
     sortParams.forEach(param => param.addEventListener('click', active));
     document.addEventListener('DOMContentLoaded', showTodosAndChangeTheme);
@@ -45,20 +47,26 @@
     
     
     function handleMediaTablet(media) {
-        if (media.matches && localStorage.getItem('theme') === 'light') {
-            main.classList.add('main--tablet--light');
-            main.classList.remove('main--tablet');
-        } else if (media.matches && localStorage.getItem('theme') === 'dark') {
-            main.classList.add('main--tablet');
-            main.classList.remove('main--tablet--light');
-        } else if (!media.matches && localStorage.getItem('theme') === 'light') {
-            main.classList.remove('main--tablet');
-            main.classList.remove('main--tablet--light');
-            main.classList.add('main--light');
-        } else {
-            main.classList.remove('main--tablet');
-            main.classList.remove('main--tablet--light');
-            main.classList.remove('main--light');
+        const theme = localStorage.getItem('theme');
+
+        switch (true) {
+            case media.matches && theme === 'light':
+                main.classList.add('main--tablet--light');
+                main.classList.remove('main--tablet');
+                break;
+
+            case media.matches && theme === 'dark':
+                main.classList.add('main--tablet');
+                main.classList.remove('main--tablet--light');
+                break;
+
+            case !media.matches && theme === 'light':
+                main.classList.remove('main--tablet', 'main--tablet--light');
+                main.classList.add('main--light');
+                break;
+
+            default:
+                main.classList.remove('main--tablet', 'main--tablet--light', 'main--light');
         }
     }
     
@@ -86,72 +94,77 @@
                 localStorage.setItem('theme', 'dark');
             }
         }
+
+        const lightSingleElements = [
+            [changeThemeBtn, 'todo__header_btn--light'],
+            [todosList, 'todos__list--light'],
+            [todosSort, 'todos__sort--light'],
+            [sortParamsWrapper, 'todos__sort_params--light'],
+            [todoAdd, 'todo__add--light'],
+            [todoAddText, 'todo__add_text--light'],
+            [todoAddMark, 'todo__mark--add--light'],
+            [document.querySelector('.todo__smth') ? document.querySelector('.todo__smth') : null, 'todo__smth--light']
+        ];
+        const lightArrayElements = [
+            [todoInputs, 'todo__input--light'],
+            [todoMarks, 'todo__mark--light'],
+            [todoTexts, 'todo__text--light']
+        ];
         
     
         if (localStorage.getItem('theme') === 'light') {
-            changeThemeBtn.classList.add('todo__header_btn--light');
+
+            // Light Background
             if (mediaQueryTablet.matches) {
-                main.classList.add('main--tablet');
-                main.classList.add('main--tablet--light');
+                main.classList.add('main--tablet', 'main--tablet--light');
             } else {
                 main.classList.remove('main--tablet');
                 main.classList.add('main--light');
             }
-            todosList.classList.add('todos__list--light');
-            todosSort.classList.add('todos__sort--light');
-            sortParamsWrapper.classList.add('todos__sort_params--light');
-            todoAdd.classList.add('todo__add--light');
-            todoAddText.classList.add('todo__add_text--light');
-            todoAddMark.classList.add('todo__mark--add--light');
-            document.querySelector('.todo__smth') ? document.querySelector('.todo__smth').classList.add('todo__smth--light') : null;
-            todoInputs.forEach(todoInput => {
-                todoInput.classList.add('todo__input--light');
+
+
+            lightSingleElements.forEach(([_, className]) => {
+                if (_ !== null) _.classList.add(className);
             });
-            document.querySelectorAll('.todo__mark').forEach(_ => {
-                _.classList.add('todo__mark--light');
-            });
-            document.querySelectorAll('.todo__text').forEach(_ => {
-                _.classList.add('todo__text--light');
-            });
+            lightArrayElements.forEach(([arr, className]) => {arr.forEach(_ => _.classList.add(className))});
         } else {
-            changeThemeBtn.classList.remove('todo__header_btn--light');
+
+            // Dark Background 
             if (mediaQueryTablet.matches) {
                 main.classList.add('main--tablet');
                 main.classList.remove('main--tablet--light');
             } else {
-                main.classList.remove('main--tablet');
-                main.classList.remove('main--light');
+                main.classList.remove('main--tablet', 'main--light');
             }
-            todosList.classList.remove('todos__list--light');
-            todosSort.classList.remove('todos__sort--light');
-            sortParamsWrapper.classList.remove('todos__sort_params--light');
-            todoAdd.classList.remove('todo__add--light');
-            todoAddText.classList.remove('todo__add_text--light');
-            todoAddMark.classList.remove('todo__mark--add--light');
-            document.querySelector('.todo__smth') ? document.querySelector('.todo__smth').classList.remove('todo__smth--light') : null;
-            todoInputs.forEach(todoInput => {
-                todoInput.classList.remove('todo__input--light');
+
+
+            lightSingleElements.forEach(([_, className]) => {
+                if (_ !== null) _.classList.remove(className);
             });
-            document.querySelectorAll('.todo__mark').forEach(_ => {
-                _.classList.remove('todo__mark--light');
-            });
-            document.querySelectorAll('.todo__text').forEach(_ => {
-                _.classList.remove('todo__text--light');
-            });
+            lightArrayElements.forEach(([arr, className]) => {arr.forEach(_ => _.classList.remove(className))});
         }
     }
     
+    function addAnimation(animationNode) {
+        animationNode.classList.add('toggle__mark--checked');
+        animationNode.classList.add('scale-out-center');
+        setTimeout(() => {
+            animationNode.classList.remove('scale-out-center');
+            animationNode.classList.add('scale-up-center');
+            animationNode.classList.remove('toggle__mark--checked');
+        }, 480)
+        setTimeout(() => animationNode.classList.remove('scale-up-center'), 1000);
+    }
     
     
     function showTodosAndChangeTheme() {
         changeTheme(event, false);
     
-    
         const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
     
         storageTodosList.forEach(([text, className, id]) => {
             addTodo(text, className, id, false);
-            updateTodoInputs();
+            updateTodoSmth('todo__input', 'todo__mark', 'todo__text');
             todoCount();
         });
     
@@ -160,13 +173,13 @@
                 param.classList.remove('activeBtn');
             });
             sortActiveBtn.classList.add('activeBtn');
-            sortActive();
+            sort.call(sortActiveBtn);
         } else if (JSON.parse(localStorage.getItem('activeSortBtn')) === "sort__param--completed") {
             sortParams.forEach(param => {
                 param.classList.remove('activeBtn');
             });
             sortCompletedBtn.classList.add('activeBtn');
-            sortCompleted();
+            sort.call(sortCompletedBtn);
         }
     }
     
@@ -181,7 +194,7 @@
         // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
         if (!sortAllBtn.classList.contains('activeBtn')) {
             resetParamBtns();
-            sortAll();
+            sort.call(sortAllBtn);
         }
     
         
@@ -234,8 +247,7 @@
     
         todosList.append(newTodo);
         
-    
-        updateTodoInputs();
+        updateTodoSmth('todo__input', 'todo__mark', 'todo__text');
         todoCount();
         appendAllCross();
     
@@ -243,18 +255,10 @@
         if (isUpdate) {
             const todoListStorage = JSON.parse(localStorage.getItem('todoList')) || [];
             localStorage.setItem('todoList', JSON.stringify([...todoListStorage, [todoText.value, newTodo.classList.contains('activeTodo') ? 'activeTodo' : 'completedTodo', id]]));
-    
-            todoAddMark.classList.add('toggle__mark--checked');
-            todoAddMark.classList.add('scale-out-center');
+            
             todoText.value = '';
-            setTimeout(() => {
-                todoAddMark.classList.remove('scale-out-center');
-                todoAddMark.classList.add('scale-up-center');
-                todoAddMark.classList.remove('toggle__mark--checked');
-            }, 480)
-            setTimeout(() => todoAddMark.classList.remove('scale-up-center'), 1000);
+            addAnimation(todoAddMark);
         }
-        
     }
     
     function addMarkAndDecorateText(mark) {
@@ -299,9 +303,21 @@
         todoInputs.forEach(_ => itemCount++);
         todoCounts.innerText = `${itemCount} items left`;
     }
-    
-    function updateTodoInputs() {
-        todoInputs = document.querySelectorAll('.todo__input') || [];
+
+    function updateTodoSmth(...classNames) {
+        classNames.forEach(className => {
+            switch(className) {
+                case 'todo__input':
+                    todoInputs = document.querySelectorAll(`.${className}`) || [];
+                    break;
+                case 'todo__mark':
+                    todoMarks = document.querySelectorAll(`.${className}`) || [];
+                    break;
+                case 'todo__text':
+                    todoTexts = document.querySelectorAll(`.${className}`) || [];
+                    break;
+            }
+        })
     }
     
     function removeSmthField() {
@@ -376,60 +392,34 @@
             todoCount();
         }, 480)
     }
-    
-    function sortAll() {
+
+    function sort() {
+        let className = '';
+        let smthFieldText = '';
+        if (this.classList.contains('sort__param--all')) {
+            className = 'todo__input';
+            smthFieldText = 'Add something...';
+        } else if (this.classList.contains('sort__param--active')) {
+            className = 'activeTodo';
+            smthFieldText = 'No Active yet...';
+        } else {
+            className = 'completedTodo';
+            smthFieldText = 'No Completed yet...';
+        }
+
         let inputCount = 0;
         todosList.innerHTML = '';
-    
+
         todoInputs.forEach(todoInput => {
-            if (todoInput) {todosList.append(todoInput); inputCount++};
+            if (todoInput.classList.contains(className)) {todosList.append(todoInput); inputCount++};
         });
+
+        createSmthField(smthFieldText, inputCount);
     
-        createSmthField("Add something...", inputCount);
-    
-        if (mediaQueryMobile.matches) {
-            todosList.after(todosSort);
-        } else {
-            todoWrapper.append(todosSort);
-        }
-    
+        mediaQueryMobile.matches ? todosList.after(todosSort) : todoWrapper.append(todosSort);
     }
-    
-    function sortActive() {
-        let inputCount = 0;
-        todosList.innerHTML = '';
-    
-        todoInputs.forEach(todoInput => {
-            if (todoInput.classList.contains('activeTodo')) {todosList.append(todoInput); inputCount++};
-        });
-    
-        createSmthField("No Active yet...", inputCount);
-    
-        if (mediaQueryMobile.matches) {
-            todosList.after(todosSort);
-        } else {
-            todoWrapper.append(todosSort);
-        }
-    }
-    
-    function sortCompleted() {
-        let inputCount = 0;
-        todosList.innerHTML = '';
-    
-        todoInputs.forEach(todoInput => {
-            if (todoInput.classList.contains('completedTodo')) {todosList.append(todoInput); inputCount++};
-        });
-    
-        createSmthField("No Completed yet...", inputCount);
-    
-        if (mediaQueryMobile.matches) {
-            todosList.after(todosSort);
-        } else {
-            todoWrapper.append(todosSort);
-        }
-    }
-    
-    
+
+
     function clearCompleted() {
     
         let inputCount = 0;
@@ -453,16 +443,13 @@
             }
         });
         createSmthField("Add something...", inputCount);
-        if (mediaQueryMobile.matches) {
-            todosList.after(todosSort);
-        } else {
-            todoWrapper.append(todosSort);
-        }
+        mediaQueryMobile.matches ? todosList.after(todosSort) : todoWrapper.append(todosSort);
+
     
         localStorage.setItem('activeSortBtn', JSON.stringify('sort__param--all'));
         resetParamBtns(); 
         // Reverse to All btn
-        updateTodoInputs();
+        updateTodoSmth('todo__input', 'todo__mark', 'todo__text');
         todoCount();
     }
 })();
