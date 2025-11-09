@@ -2,22 +2,12 @@
 
 A web application to help you manage your daily tasks. 🎯
 
-## 🎯 Overview
-
-![App Architecture](./assets/preview/desktop-view-dark.png)
-
 ## 📸 Screenshots
 
-### Desktop View Dark Theme
+### Desktop View 
 ![Desktop View Light](./assets/preview/desktop-view-dark.png)
 
-### Desktop View Light Theme
-![Desktop View Light](./assets/preview/desktop-view-light.png)
-
-### Mobile View Dark Theme
-![Mobile View](./assets/preview/mobile-view-dark.png)
-
-### Mobile View Light Theme
+### Mobile View 
 ![Mobile View](./assets/preview/mobile-view-light.png)
 
 ## 🔥 Features
