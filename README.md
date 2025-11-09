@@ -14,3 +14,5 @@ A web application to help you manage your daily tasks. 🎯
 
 *   **📄 Frontend:** HTML, CSS, JavaScript
 *   **🌈 Styling:** CSS (SCSS)
+
+![Alt text](./assets/images/to-do-list.png "Optional title")
