@@ -254,6 +254,12 @@ body {
   text-decoration: line-through;
   color: #666666;
 }
+.todo__footer_text {
+  font-size: 0.9rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: #666666;
+  align-self: center;
+}
 
 @media (min-width: 576px) and (max-width: 768px) {
   .todo {

@@ -13,6 +13,7 @@
     const sortActiveBtn = document.querySelector('.sort__param--active');
     const sortCompletedBtn = document.querySelector('.sort__param--completed');
     const sortCompletedClear = document.querySelector('.todos__sort_clear');
+    const footerText = document.querySelector('.todo__footer_text');
     let todoInputs = document.querySelectorAll('.todo__input');
     let todoMarks = document.querySelectorAll('.todo__mark');
     let todoTexts = document.querySelectorAll('.todo__text');
@@ -31,6 +32,59 @@
     document.addEventListener('DOMContentLoaded', showTodosAndChangeTheme);
     changeThemeBtn.addEventListener('click', changeTheme);
     todoAddText.addEventListener('keydown', addTodoWithEnter);
+
+    // Drag and Drop
+    todosList.addEventListener('dragstart', (event) => {
+        if (event.target.classList.contains('todo__input'))
+            event.target.classList.add('selected');
+    });
+    todosList.addEventListener('dragend', (event) => {
+        if (event.target.classList.contains('todo__input')) {
+            event.target.classList.remove('selected');
+            
+            sortAllBtn.classList.contains('activeBtn') ? updateTodoSmth('todo__input') : null;
+            const newStorageTodosList = [...todoInputs].map(todoInput => {
+                return [
+                    todoInput.children[1].value, 
+                    todoInput.classList.contains('completedTodo') ? 
+                        'completedTodo' :
+                        'activeTodo',
+                    todoInput.getAttribute('data-id')
+                ];
+            });
+            localStorage.setItem('todoList', JSON.stringify(newStorageTodosList));
+        }
+    });
+    todosList.addEventListener('dragover', (event) => {
+        event.preventDefault();
+
+        const selectedElement = document.querySelector('.selected');
+        const currentElement = event.target;
+        const itemHeight = selectedElement.offsetHeight;
+        const clientY = event.offsetY; // client Y position in element
+
+        if (selectedElement !== currentElement && currentElement.classList.contains('todo__input')) {
+
+            if (clientY < itemHeight / 2) { 
+                // if client Y position < itemHeight / 2 -> add element before nextElementSibling
+                const nextElement = (currentElement === selectedElement.nextElementSibling) ? 
+                    selectedElement.nextElementSibling :
+                    currentElement;
+        
+                todosList.insertBefore(nextElement, selectedElement);
+            } else { 
+                // if client Y position >= itemHeight / 2 -> add element before previousElementSibling
+                const nextElement = (currentElement === selectedElement.previousElementSibling) ? 
+                    selectedElement.previousElementSibling :
+                    currentElement;
+        
+                todosList.insertBefore(selectedElement, nextElement);
+            }
+            
+        }
+    });
+
+
     todosList.addEventListener('click', (event) => {
       if (event.target.classList.contains('todo__mark')) {
         addMarkAndDecorateText(event.target);
@@ -74,6 +128,7 @@
         if (media.matches) {
             sortParamsWrapper.classList.add('todo__params');
             todoWrapper.append(sortParamsWrapper);
+            todoWrapper.append(footerText);
             appendAllCross();
         } else {
             sortParamsWrapper.classList.remove('todo__params');
@@ -214,6 +269,7 @@
         newTodo.classList.add('activeTodo');
         newTodo.classList.add('fadeIn');
         newTodo.setAttribute('data-id', id);
+        newTodo.setAttribute('draggable', 'true');
         if (mediaQueryMobile.matches) {
             newTodo.innerHTML = `
                 <div class="todo__mark"></div>
@@ -250,6 +306,8 @@
         updateTodoSmth('todo__input', 'todo__mark', 'todo__text');
         todoCount();
         appendAllCross();
+
+        newTodo.scrollIntoView({block : "end"});
     
         // Save to local storage and animation if not update information
         if (isUpdate) {
@@ -417,6 +475,7 @@
         createSmthField(smthFieldText, inputCount);
     
         mediaQueryMobile.matches ? todosList.after(todosSort) : todoWrapper.append(todosSort);
+        todoWrapper.append(footerText);
     }
 
 
@@ -444,7 +503,7 @@
         });
         createSmthField("Add something...", inputCount);
         mediaQueryMobile.matches ? todosList.after(todosSort) : todoWrapper.append(todosSort);
-
+        todoWrapper.append(footerText);
     
         localStorage.setItem('activeSortBtn', JSON.stringify('sort__param--all'));
         resetParamBtns(); 

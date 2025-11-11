@@ -267,6 +267,15 @@ body {
         text-decoration: line-through;
         color: darken($color: #fff, $amount: 60%);
     }
+
+    &__footer {
+        &_text {
+            font-size: 0.9rem;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: darken($color: #fff, $amount: 60%);
+            align-self: center;
+        }
+    }
 }
 
 @include media(576px, 768px) {
