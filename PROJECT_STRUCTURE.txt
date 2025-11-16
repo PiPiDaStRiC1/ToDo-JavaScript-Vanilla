@@ -1,0 +1,36 @@
+.gitignore
+app.js
+index.html
+package.json
+README.md
+
+assets/
+    images/
+        preview/
+
+CSS/
+    style.css
+    style.min.css
+
+src/
+    index.js
+    style.scss
+
+    components/
+        todoCount.js
+        todoCreate.js
+        todoDrag.js
+        todoRemove.js
+        todoSmth.js
+        todoSort.js
+        todoUpdate.js
+
+    dom/
+        elements.js
+        events.js
+
+    utils/
+        animations.js
+        media.js
+        storage.js
+        theme.js

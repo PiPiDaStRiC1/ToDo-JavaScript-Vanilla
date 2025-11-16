@@ -1,0 +1,21 @@
+{
+  "name": "todo-javascript-",
+  "version": "1.0.0",
+  "description": "A web application to help you manage your daily tasks. 🎯",
+  "homepage": "https://github.com/PiPiDaStRiC1/ToDo-JavaScript-#readme",
+  "bugs": {
+    "url": "https://github.com/PiPiDaStRiC1/ToDo-JavaScript-/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiPiDaStRiC1/ToDo-JavaScript-.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "source": "./index.html",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,105 @@
+import {elements} from '../dom/elements.js'; 
+import {addAnimation} from '../utils/animations.js';
+import { updateTodoSmth } from './todoUpdate.js';
+import {removeSmthField} from './todoSmth.js';
+import {todoCount} from '../components/todoCount.js';
+import { appendAllCross } from '../utils/media.js';
+
+
+export function addTodoWithEnter(event) {
+    if (event.key === 'Enter') {
+        addTodo(this.value, 'activeTodo');
+    }
+}
+
+export function addTodo(text, className, id = null, isUpdate = true) {
+    // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
+    // if (!sortAllBtn.classList.contains('activeBtn')) {
+    //     resetParamBtns();
+    //     sort.call(sortAllBtn);
+    // }
+
+    
+    id =  Number(id) || Date.now();
+    const todoText = document.querySelector('.todo__add_text');
+    if (!todoText.value && isUpdate) {
+        todoText.setAttribute('placeholder', 'This field can`t be empty!');
+        return;
+    }
+
+    removeSmthField();
+
+    todoText.setAttribute('placeholder', 'Create a new todo...');
+
+    const newTodo = document.createElement('li');
+    newTodo.classList.add('todo__input');
+    newTodo.classList.add('activeTodo');
+    newTodo.classList.add('fadeIn');
+    newTodo.setAttribute('data-id', id);
+    newTodo.setAttribute('draggable', 'true');
+    if (elements.mediaQueryMobile.matches) {
+        newTodo.innerHTML = `
+            <div class="todo__mark"></div>
+            <input type="text" placeholder="Change your todo..." class="todo__text">
+            <button class="todo__cross"></button>
+        `
+    } else {
+        newTodo.innerHTML = `
+            <div class="todo__mark"></div>
+            <input type="text" placeholder="Change your todo..." class="todo__text">
+        `
+    }
+    
+    // Change Theme
+    if (localStorage.getItem('theme') === 'light') {
+        newTodo.classList.add('todo__input--light');
+        newTodo.children[0].classList.add('todo__mark--light');
+        newTodo.children[1].classList.add('todo__text--light');
+    }
+
+    const newTodoText = newTodo.querySelector('.todo__text');
+
+
+    newTodoText.value = typeof text === 'object' ? todoText.value : String(text).replace(/[<>]/g, '');
+    if (className === 'completedTodo') {
+        newTodo.classList.add('completedTodo');
+        newTodo.classList.remove('activeTodo');
+        newTodo.children[0].classList.add('toggle__mark--checked');
+        newTodo.children[1].classList.add('toggle__mark--cross');
+    }
+
+    elements.todosList.append(newTodo);
+    
+    updateTodoSmth('todo__input', 'todo__mark', 'todo__text');
+    todoCount();
+    appendAllCross();
+
+    newTodo.scrollIntoView({block : "end"});
+
+    // Save to local storage and animation if not update information
+    if (isUpdate) {
+        const todoListStorage = JSON.parse(localStorage.getItem('todoList')) || [];
+        localStorage.setItem('todoList', JSON.stringify([...todoListStorage, [todoText.value, newTodo.classList.contains('activeTodo') ? 'activeTodo' : 'completedTodo', id]]));
+        
+        todoText.value = '';
+        addAnimation(elements.todoAddMark);
+    }
+}
+
+
+export function addMarkAndDecorateText(mark) {
+    mark.parentNode.classList.toggle('activeTodo');
+    mark.classList.toggle('toggle__mark--checked');
+    mark.nextElementSibling.classList.toggle('toggle__mark--cross');
+    mark.parentNode.classList.toggle('completedTodo');
+
+    // Change todo class
+    const todoListStorage = JSON.parse(localStorage.getItem('todoList')) || [];
+    const newTodoListStorage = todoListStorage.map(([_, className, id]) => {
+        if (Number(id) === Number(mark.parentNode.getAttribute('data-id'))) {
+            className = mark.parentNode.classList.contains('activeTodo') ? 'activeTodo' : 'completedTodo';
+        }
+        return [_, className, id];
+    });
+    localStorage.setItem('todoList', JSON.stringify(newTodoListStorage));
+}
