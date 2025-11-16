@@ -1,4 +1,3 @@
-
 export function todoCount() {
     const todoInputs = document.querySelectorAll('.todo__input');
 

@@ -209,6 +209,7 @@ body {
         display: flex;
         position: relative;
         background-color: var(--inputColor);
+        border: 1px solid transparent;
         border-bottom: 1px solid darken($color: #fff, $amount: 60%);
         justify-content: center;
         align-items: center;

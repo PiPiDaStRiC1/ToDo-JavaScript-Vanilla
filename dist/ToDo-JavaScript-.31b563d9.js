@@ -1045,17 +1045,35 @@ var _todoUpdateJs = require("./todoUpdate.js");
 var _todoSmthJs = require("./todoSmth.js");
 var _todoCountJs = require("../components/todoCount.js");
 var _mediaJs = require("../utils/media.js");
+var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
     if (event.key === 'Enter') addTodo(this.value, 'activeTodo');
 }
 function addTodo(text, className, id = null, isUpdate = true) {
-    // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
-    // if (!sortAllBtn.classList.contains('activeBtn')) {
-    //     resetParamBtns();
-    //     sort.call(sortAllBtn);
-    // }
     id = Number(id) || Date.now();
     const todoText = document.querySelector('.todo__add_text');
+    // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
+    if (!(0, _elementsJs.elements).sortAllBtn.classList.contains('activeBtn') && isUpdate) {
+        if (!todoText.value) {
+            todoText.setAttribute('placeholder', 'This field can`t be empty!');
+            return;
+        }
+        const todoListStorage = JSON.parse(localStorage.getItem('todoList')) || [];
+        localStorage.setItem('todoList', JSON.stringify([
+            ...todoListStorage,
+            [
+                todoText.value,
+                'activeTodo',
+                id
+            ]
+        ]));
+        localStorage.setItem('activeSortBtn', JSON.stringify('sort__param--all'));
+        (0, _todoUpdateJs.resetParamBtns)();
+        (0, _todoSortJs.sort).call((0, _elementsJs.elements).sortAllBtn);
+        todoText.value = '';
+        (0, _animationsJs.addAnimation)((0, _elementsJs.elements).todoAddMark);
+        return;
+    }
     if (!todoText.value && isUpdate) {
         todoText.setAttribute('placeholder', 'This field can`t be empty!');
         return;
@@ -1131,7 +1149,7 @@ function addMarkAndDecorateText(mark) {
     localStorage.setItem('todoList', JSON.stringify(newTodoListStorage));
 }
 
-},{"../dom/elements.js":"ljsH5","../utils/animations.js":"2usXb","./todoUpdate.js":"fzcAu","./todoSmth.js":"liFvc","../components/todoCount.js":"6P2cI","../utils/media.js":"4BUOk","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2usXb":[function(require,module,exports,__globalThis) {
+},{"../dom/elements.js":"ljsH5","../utils/animations.js":"2usXb","./todoUpdate.js":"fzcAu","./todoSmth.js":"liFvc","../components/todoCount.js":"6P2cI","../utils/media.js":"4BUOk","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","../components/todoSort.js":"feij6"}],"2usXb":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addAnimation", ()=>addAnimation);
@@ -1328,10 +1346,13 @@ var _todoUpdateJs = require("./todoUpdate.js");
 function attachDragEvents() {
     (0, _elementsJs.elements).todosList.addEventListener('dragstart', (event)=>{
         if (event.target.classList.contains('todo__input')) event.target.classList.add('selected');
+        event.target.style.border = '1px dashed #83aaf8ff';
     });
     (0, _elementsJs.elements).todosList.addEventListener('dragend', (event)=>{
         if (event.target.classList.contains('todo__input')) {
             event.target.classList.remove('selected');
+            event.target.style.border = '1px solid transparent';
+            event.target.style.borderBottom = '1px solid #666666';
             (0, _todoUpdateJs.saveOrder)();
         }
     });

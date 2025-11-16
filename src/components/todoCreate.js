@@ -1,10 +1,10 @@
 import {elements} from '../dom/elements.js'; 
 import {addAnimation} from '../utils/animations.js';
-import { updateTodoSmth } from './todoUpdate.js';
+import { updateTodoSmth, resetParamBtns } from './todoUpdate.js';
 import {removeSmthField} from './todoSmth.js';
 import {todoCount} from '../components/todoCount.js';
 import { appendAllCross } from '../utils/media.js';
-
+import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
     if (event.key === 'Enter') {
@@ -13,15 +13,29 @@ export function addTodoWithEnter(event) {
 }
 
 export function addTodo(text, className, id = null, isUpdate = true) {
-    // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
-    // if (!sortAllBtn.classList.contains('activeBtn')) {
-    //     resetParamBtns();
-    //     sort.call(sortAllBtn);
-    // }
-
-    
     id =  Number(id) || Date.now();
     const todoText = document.querySelector('.todo__add_text');
+    
+    // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
+    if (!elements.sortAllBtn.classList.contains('activeBtn') && isUpdate) {
+        if (!todoText.value) {
+            todoText.setAttribute('placeholder', 'This field can`t be empty!');
+            return;
+        }
+        
+        const todoListStorage = JSON.parse(localStorage.getItem('todoList')) || [];
+        localStorage.setItem('todoList', JSON.stringify([...todoListStorage, [todoText.value, 'activeTodo', id]]));
+        localStorage.setItem('activeSortBtn', JSON.stringify('sort__param--all'));
+
+        resetParamBtns();
+        sort.call(elements.sortAllBtn);
+
+        todoText.value = '';
+        addAnimation(elements.todoAddMark);
+        return;
+    }
+
+    
     if (!todoText.value && isUpdate) {
         todoText.setAttribute('placeholder', 'This field can`t be empty!');
         return;

@@ -5,10 +5,13 @@ export function attachDragEvents() {
     elements.todosList.addEventListener('dragstart', (event) => {
         if (event.target.classList.contains('todo__input'))
             event.target.classList.add('selected');
+            event.target.style.border = '1px dashed #83aaf8ff';
     });
     elements.todosList.addEventListener('dragend', (event) => {
         if (event.target.classList.contains('todo__input')) {
             event.target.classList.remove('selected');
+            event.target.style.border = '1px solid transparent';
+            event.target.style.borderBottom = '1px solid #666666';
             saveOrder();
         }
     });

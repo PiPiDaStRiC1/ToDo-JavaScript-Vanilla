@@ -1,8 +1,7 @@
 import {elements} from '../dom/elements.js';
 import {createSmthField, removeSmthField} from '../components/todoSmth.js';
 import {addTodo} from '../components/todoCreate.js';
-import { resetParamBtns } from './todoUpdate.js';
-import {updateTodoSmth} from './todoUpdate.js';
+import { resetParamBtns, updateTodoSmth } from './todoUpdate.js';
 import {todoCount} from './todoCount.js';
 
 export function active() {

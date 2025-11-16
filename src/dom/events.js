@@ -1,11 +1,9 @@
 import {elements} from '../dom/elements.js';
-import { showTodosAndChangeTheme } from '../utils/theme.js';
-import { changeTheme } from '../utils/theme.js';
+import { showTodosAndChangeTheme, changeTheme } from '../utils/theme.js';
 import { sort, clearCompleted, active } from '../components/todoSort.js';
-import { addMarkAndDecorateText } from '../components/todoCreate.js';
+import { addMarkAndDecorateText, addTodo, addTodoWithEnter } from '../components/todoCreate.js';
 import { removeTodo } from '../components/todoRemove.js';
 import { handleMediaMobile, handleMediaTablet } from '../utils/media.js';
-import { addTodo, addTodoWithEnter } from '../components/todoCreate.js';
 import {changeTextInStorage} from '../utils/storage.js'
 
 export function attachEvents() {
