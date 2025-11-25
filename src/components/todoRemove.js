@@ -1,4 +1,5 @@
 import { todoCount } from "./todoCount";
+import {createSmthField} from "./todoSmth"
 
 export function removeTodo(cross) {
     let todoInputs = document.querySelectorAll('.todo__input');

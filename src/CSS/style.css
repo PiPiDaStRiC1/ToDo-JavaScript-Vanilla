@@ -75,7 +75,7 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 7rem;
+  top: 9rem;
   display: flex;
   flex-direction: column;
   gap: 1.3rem;
@@ -172,9 +172,10 @@ body {
   background: transparent;
   border: 0;
   position: absolute;
-  width: 1rem;
-  height: 1rem;
-  background-size: 1rem 1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-size: 1.2rem 1.2rem;
+  background-repeat: no-repeat;
   background-image: url(../../assets/images/icon-cross.svg);
   left: 90%;
 }
@@ -293,9 +294,12 @@ body {
     height: 1.7rem;
     background-size: 1.7rem 1.7rem;
   }
+  .todo__add_text {
+    font-size: 1rem;
+  }
   .todo__text {
     padding: 1.05rem;
-    padding-right: 2.5rem;
+    padding-right: 2.8rem;
     padding-left: 0;
   }
   .todo__smth {
