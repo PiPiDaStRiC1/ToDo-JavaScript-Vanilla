@@ -121,11 +121,11 @@ body {
 
 .todo__add {
   background-color: var(--inputColor);
-  -webkit-box-shadow: 11px 9px 8px #223c5033;
-  -moz-box-shadow: 11px 9px 8px #223c5033;
+  -webkit-box-shadow: 5px 4px 10px 5px #223c5033;
+  -moz-box-shadow: 5px 4px 10px 5px #223c5033;
   border-radius: .5rem;
   display: flex;
-  box-shadow: 5px 6px 8px #223c5080;
+  box-shadow: 5px 4px 10px 5px #0a0a0a33;
 }
 
 .todo__add--light {
@@ -312,7 +312,7 @@ body {
 
 @media (width >= 0) and (width <= 468px) {
   .todo {
-    width: 19rem;
+    width: 20.5rem;
   }
 
   .todo__header {
@@ -334,11 +334,12 @@ body {
   }
 
   .todo__text {
-    padding: 1.05rem 2.8rem 1.05rem 0;
+    padding-left: 0;
+    padding-right: 2.8rem;
   }
 
   .todo__smth {
-    padding: 1.05rem;
+    padding: 1.33rem;
   }
 }
 
@@ -350,6 +351,7 @@ body {
   list-style: none;
   display: flex;
   overflow-y: scroll;
+  box-shadow: 5px -11px 10px 12px #223c5033;
 }
 
 .todos__list::-webkit-scrollbar {
@@ -373,6 +375,8 @@ body {
   user-select: none;
   color: #666;
   background-color: var(--inputColor);
+  -webkit-box-shadow: 5px 4px 10px 5px #223c5033;
+  -moz-box-shadow: 5px 4px 10px 5px #223c5033;
   border-bottom-right-radius: .5rem;
   border-bottom-left-radius: .5rem;
   justify-content: space-between;
@@ -383,21 +387,37 @@ body {
   padding: 0 1.5rem;
   font-size: .9rem;
   display: flex;
+  box-shadow: 5px 4px 10px 5px #0a0a0a33;
 }
 
 .todos__sort_params {
-  cursor: pointer;
+  -webkit-box-shadow: 5px 4px 10px 5px #223c5033;
+  -moz-box-shadow: 5px 4px 10px 5px #223c5033;
   gap: 1rem;
   list-style: none;
   display: flex;
+  box-shadow: 5px 4px 10px 5px #0a0a0a33;
 }
 
 .todos__sort_params--light {
   background-color: var(--inputColorLight);
 }
 
+.todos__sort_params_param {
+  cursor: pointer;
+  color: #666;
+  user-select: none;
+  background-color: #0000;
+  border: 0;
+  font-family: JosefinSans;
+}
+
 .todos__sort_clear {
   cursor: pointer;
+  color: #666;
+  background-color: #0000;
+  border: 0;
+  font-family: JosefinSans;
 }
 
 .todos__sort_clear:hover, .todos__sort_clear:focus {
@@ -408,9 +428,27 @@ body {
   background-color: var(--inputColorLight);
 }
 
+@media (width >= 468px) and (width <= 576px) {
+  .todos__sort {
+    position: relative;
+  }
+
+  .todos__sort_params_param, .todos__sort_clear {
+    cursor: none;
+  }
+
+  .todos__list {
+    max-height: 13.45rem;
+  }
+}
+
 @media (width >= 0) and (width <= 468px) {
   .todos__sort {
     position: relative;
+  }
+
+  .todos__sort_params_param, .todos__sort_clear {
+    cursor: none;
   }
 
   .todos__list {
