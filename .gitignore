@@ -1,0 +1,7 @@
+node_modules/
+package-lock.json
+.parcel-cache/
+dist/
+dist/
+build/
+src/CSS/style.css
