@@ -36,7 +36,7 @@ body {
     &::before {
         content: "";
         display: block;
-        background-image: url(../assets/images/bg-desktop-dark.jpg);
+        background-image: url(../../assets/images/bg-desktop-dark.jpg);
         width: 100%;
         height: 25rem;
         background-size: 100% 25rem;
@@ -47,7 +47,7 @@ body {
             z-index: 10;
             content: "";
             display: block;
-            background-image: url(../assets/images/bg-desktop-light.jpg);
+            background-image: url(../../assets/images/bg-desktop-light.jpg);
             width: 100%;
             height: 25rem;
             background-size: 100% 25rem;
@@ -59,7 +59,7 @@ body {
             z-index: 10;
             content: "";
             display: block;
-            background-image: url(../assets/images/bg-mobile-dark.jpg);
+            background-image: url(../../assets/images/bg-mobile-dark.jpg);
             width: 100%;
             height: 25rem;
             background-size: 100% 25rem;
@@ -70,7 +70,7 @@ body {
                 z-index: 10;
                 content: "";
                 display: block;
-                background-image: url(../assets/images/bg-mobile-light.jpg);
+                background-image: url(../../assets/images/bg-mobile-light.jpg);
                 width: 100%;
                 height: 25rem;
                 background-size: 100% 25rem;
@@ -104,12 +104,12 @@ body {
             user-select: none;
             border: 0;
             background-color: transparent;
-            background-image: url(../assets/images/icon-sun.svg);
+            background-image: url(../../assets/images/icon-sun.svg);
             background-size: 2rem 2rem;
             width: 2rem;
             height: 2rem;
             &--light {
-                background-image: url(../assets/images/icon-moon.svg);
+                background-image: url(../../assets/images/icon-moon.svg);
             }
         }
     }
@@ -186,7 +186,7 @@ body {
         width: 1rem;
         height: 1rem;
         background-size: 1rem 1rem;
-        background-image: url(../assets/images/icon-cross.svg);
+        background-image: url(../../assets/images/icon-cross.svg);
         left: 90%;
     }
 
@@ -238,7 +238,7 @@ body {
         background: linear-gradient(43deg, #0dfabd,#689df3,#7ae1f5);
         &::after {
             content: "";
-            background-image: url(../assets/images/icon-check.svg);
+            background-image: url(../../assets/images/icon-check.svg);
             background-size: 0.8rem 0.8rem;
             width: 0.8rem;
             height: 0.8rem;

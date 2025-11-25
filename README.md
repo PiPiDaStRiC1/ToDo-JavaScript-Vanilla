@@ -2,6 +2,9 @@
 
 A web application to help you manage your daily tasks. 🎯
 
+## Live Demo 📍 
+  https://pipidastric1.github.io/ToDo-JavaScript-Vanilla
+
 ## 🔥 Features
 
 *   **📥 Add Task:** Create a new task in your list
@@ -27,50 +30,39 @@ A web application to help you manage your daily tasks. 🎯
 
 ## 🚀 Run the project
 
-Requirements:
-- Node.js (recommended >= 14)
-- npm (bundled with Node.js)
+## Quick start 🚀 
 
-1) Install dependencies (don`t forget to change directory (cd)):
-```powershell
+1. Clone or copy the project folder to your machine. 
+```
+https://github.com/PiPiDaStRiC1/ToDo-JavaScript-Vanilla.git
+```
+2. Install dependencies:
+```
 npm install
 ```
-
-2) (Optional but recommended) Install Parcel as a dev dependency:
-```powershell
-npm install --save-dev parcel
+3. Start development server:
 ```
-
-3) Start the dev server:
-```powershell
-npm run start
-```
-If `start` script is not present in package.json, run:
-```powershell
 npx parcel index.html
 ```
-
-4) Open the app in your browser: http://localhost:1234 (Parcel default)
-
-Build for production:
-```powershell
+or
+```
+npm run start
+```
+4. Build for production:
+```
+npx parcel build index.html --public-url ./
+```
+or
+```
 npm run build
-# or
-npx parcel build index.html
 ```
-
-## package.json scripts example
-
-Add these scripts to package.json if they are missing:
-```json
-{
-  "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
-  }
-}
+5. Deploy:
 ```
-
-Tips:
-- If the dev server fails, try removing the `.parcel-cache` folder and retry.
-- Use the `--open` option with Parcel to automatically open the browser.
+npm run build && gh-pages -d dist
+```
+or
+```
+npm run deploy
+```
+## License & credits 🤝 
+- Use and adapt the code freely for personal or educational projects.
