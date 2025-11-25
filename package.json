@@ -15,7 +15,7 @@
   "type": "module",
   "source": "./index.html",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel index.html --open",
     "build": "parcel build index.html --public-url ./",
     "deploy": "npm run build && gh-pages -d dist"
   },
