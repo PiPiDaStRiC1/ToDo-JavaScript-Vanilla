@@ -64,6 +64,7 @@
     "universalify": "^2.0.1"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.16.1",
     "gh-pages": "^6.3.0",
     "parcel": "^2.16.1"
   }

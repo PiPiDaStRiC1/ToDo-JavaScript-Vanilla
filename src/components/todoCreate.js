@@ -6,7 +6,7 @@ import {todoCount} from '../components/todoCount.js';
 import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
-    if (event.key === 'Enter') {
+    if (event.keyCode === 13) {
         event.preventDefault();
 
         addTodo(this.value, 'activeTodo');
