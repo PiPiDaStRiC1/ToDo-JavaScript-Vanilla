@@ -4,7 +4,7 @@ import { sort, clearCompleted, active } from '../components/todoSort.js';
 import { addMarkAndDecorateText, addTodo, addTodoWithEnter } from '../components/todoCreate.js';
 import { removeTodo } from '../components/todoRemove.js';
 import { handleMediaMobile, handleMediaTablet } from '../utils/media.js';
-import {changeTextInStorage} from '../utils/storage.js'
+import {changeTextInStorage} from '../utils/storage.js';
 
 export function attachEvents() {
     elements.mediaQueryMobile.addEventListener('change', handleMediaMobile);

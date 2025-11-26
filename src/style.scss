@@ -285,6 +285,7 @@ body {
         width: 30rem;
         &__text {
             padding: 1.3rem;
+            padding-left: 0;
         }
     }
 }
@@ -294,6 +295,7 @@ body {
         width: 25rem;
         &__text {
             padding: 1.3rem;
+            padding-left: 0;
         }
     }
 }
@@ -316,7 +318,7 @@ body {
             font-size: 1rem;
         }
         &__text {
-            padding-right: 2.8rem;
+            padding-right: 3rem;
             padding-left: 0;
         }
         &__smth {
@@ -372,9 +374,6 @@ body {
             list-style: none;
             display: flex;
             gap: 1rem;
-            -webkit-box-shadow: 5px 4px 10px 5px rgba(34, 60, 80, 0.2);
-            -moz-box-shadow: 5px 4px 10px 5px rgba(34, 60, 80, 0.2);
-            box-shadow: 5px 4px 10px 5px rgba(10, 10, 10, 0.2);
             &--light {
                background-color: var(--inputColorLight); 
             }
@@ -398,9 +397,6 @@ body {
                 color: #5ea0ea;
             }
 
-            &:focus {
-                color: #5ea0ea;
-            }
         }
         &--light {
             background-color: var(--inputColorLight);
@@ -451,7 +447,12 @@ body {
     color: #5ea0ea;
 }
 
-
+.draggable {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
 
 
 // Анимации

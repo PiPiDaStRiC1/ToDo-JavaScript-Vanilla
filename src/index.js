@@ -1,5 +1,5 @@
 import { attachEvents } from "./dom/events";
-import { attachDragEvents } from "./components/todoDrag.js";
+import { attachDragEvents } from "./dom/dragEvents.js";
 import { elements } from './dom/elements.js';
 import { showTodosAndChangeTheme } from "./utils/theme.js";
 import { handleMediaMobile, handleMediaTablet } from "./utils/media.js";

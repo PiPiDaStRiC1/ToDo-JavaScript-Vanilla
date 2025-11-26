@@ -3,12 +3,12 @@ import {addAnimation} from '../utils/animations.js';
 import { updateTodoSmth, resetParamBtns } from './todoUpdate.js';
 import {removeSmthField} from './todoSmth.js';
 import {todoCount} from '../components/todoCount.js';
-import { appendAllCross } from '../utils/media.js';
 import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
     if (event.key === 'Enter') {
         addTodo(this.value, 'activeTodo');
+        event.preventDefault();
         elements.todoAddText.blur();
     }
 }
@@ -51,7 +51,6 @@ export function addTodo(text, className, id = null, isUpdate = true) {
     newTodo.classList.add('activeTodo');
     newTodo.classList.add('fadeIn');
     newTodo.setAttribute('data-id', id);
-    newTodo.setAttribute('draggable', 'true');
     if (elements.mediaQueryMobile.matches) {
         newTodo.innerHTML = `
             <div class="todo__mark"></div>
@@ -87,7 +86,6 @@ export function addTodo(text, className, id = null, isUpdate = true) {
     
     updateTodoSmth('todo__input', 'todo__mark', 'todo__text');
     todoCount();
-    appendAllCross();
 
     newTodo.scrollIntoView({block : "end"});
 
