@@ -730,7 +730,7 @@ var _mediaJs = require("./utils/media.js");
 // tablet design update at once
 })();
 
-},{"./dom/events":"a9e30","./dom/elements.js":"ljsH5","./utils/theme.js":"fR0HC","./utils/media.js":"4BUOk","./dom/dragEvents.js":"1MTMG"}],"a9e30":[function(require,module,exports,__globalThis) {
+},{"./dom/events":"a9e30","./dom/dragEvents.js":"1MTMG","./dom/elements.js":"ljsH5","./utils/theme.js":"fR0HC","./utils/media.js":"4BUOk"}],"a9e30":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "attachEvents", ()=>attachEvents);
@@ -1051,7 +1051,7 @@ var _todoSmthJs = require("./todoSmth.js");
 var _todoCountJs = require("../components/todoCount.js");
 var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
-    if (event.key === 'Enter') {
+    if (event.keyCode === 13) {
         event.preventDefault();
         addTodo(this.value, 'activeTodo');
         this.value = "";
@@ -1270,7 +1270,7 @@ function removeTodo(cross) {
     }, 480);
 }
 
-},{"./todoCount":"6P2cI","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./todoSmth":"liFvc"}],"4BUOk":[function(require,module,exports,__globalThis) {
+},{"./todoCount":"6P2cI","./todoSmth":"liFvc","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"4BUOk":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleMediaTablet", ()=>handleMediaTablet);
@@ -1352,6 +1352,24 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "attachDragEvents", ()=>attachDragEvents);
 var _elementsJs = require("./elements.js");
 var _todoUpdateJs = require("../components/todoUpdate.js");
+let saveTimeout = null;
+const SAVE_DELAY = 120;
+// Plan save with SAVE_DELAY
+function scheduleSave() {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(()=>{
+        (0, _todoUpdateJs.saveOrder)();
+        saveTimeout = null;
+    }, SAVE_DELAY);
+}
+// Quick save with timer reset
+function flushSave() {
+    if (saveTimeout) {
+        clearTimeout(saveTimeout);
+        saveTimeout = null;
+    }
+    (0, _todoUpdateJs.saveOrder)();
+}
 function attachDragEvents() {
     (0, _elementsJs.elements).todosList.addEventListener('mousedown', (event)=>{
         document.querySelectorAll(".todo__input").forEach((item)=>{
@@ -1372,7 +1390,7 @@ function attachDragEvents() {
         item.removeAttribute("draggable");
         item.style.border = '1px solid transparent';
         item.style.borderBottom = '1px solid #666666';
-        (0, _todoUpdateJs.saveOrder)();
+        flushSave();
     });
     (0, _elementsJs.elements).todosList.addEventListener('touchstart', (event)=>{
         document.querySelectorAll(".todo__input").forEach((item)=>{
@@ -1395,7 +1413,20 @@ function attachDragEvents() {
         item.removeAttribute("draggable");
         item.style.border = '1px solid transparent';
         item.style.borderBottom = '1px solid #666666';
-        (0, _todoUpdateJs.saveOrder)();
+        flushSave();
+    });
+    (0, _elementsJs.elements).todosList.addEventListener('dragstart', (e)=>{
+        const item = e.target.closest('.todo__input');
+        if (!item) return;
+        item.classList.add('selected');
+    });
+    (0, _elementsJs.elements).todosList.addEventListener('dragend', (e)=>{
+        const item = e.target.closest('.todo__input');
+        if (item) {
+            item.classList.remove('selected');
+            item.removeAttribute('draggable');
+        }
+        flushSave();
     });
     (0, _elementsJs.elements).todosList.addEventListener('dragover', (event)=>{
         event.preventDefault();
@@ -1407,6 +1438,7 @@ function attachDragEvents() {
         const offset = event.clientY - bounding.top;
         if (offset < bounding.height / 2) (0, _elementsJs.elements).todosList.insertBefore(selected, target);
         else (0, _elementsJs.elements).todosList.insertBefore(selected, target.nextElementSibling);
+        scheduleSave();
     });
 }
 
