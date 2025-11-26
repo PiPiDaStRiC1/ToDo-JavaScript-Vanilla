@@ -414,6 +414,7 @@ body {
   background-color: #0000;
   border: 0;
   font-family: JosefinSans;
+  font-size: .9rem;
 }
 
 .todos__sort_clear {
@@ -422,6 +423,7 @@ body {
   background-color: #0000;
   border: 0;
   font-family: JosefinSans;
+  font-size: .9rem;
 }
 
 .todos__sort_clear:hover {
@@ -442,7 +444,7 @@ body {
   }
 
   .todos__list {
-    max-height: 13.45rem;
+    max-height: 15rem;
   }
 }
 
@@ -456,7 +458,7 @@ body {
   }
 
   .todos__list {
-    max-height: 13.45rem;
+    max-height: 15rem;
   }
 }
 

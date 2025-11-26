@@ -1061,6 +1061,7 @@ function addTodoWithEnter(event) {
 function addTodo(text, className, id = null, isUpdate = true) {
     id = Number(id) || Date.now();
     const todoText = document.querySelector('.todo__add_text');
+    document.activeElement?.blur();
     // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
     if (!(0, _elementsJs.elements).sortAllBtn.classList.contains('activeBtn') && isUpdate) {
         if (!todoText.value) {
@@ -1358,7 +1359,7 @@ function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
         const item = event.target.closest('.todo__input');
-        if (item) input.blur();
+        if (item) item.blur();
         if (!item) return;
         item.setAttribute('draggable', 'true');
         item.classList.add('selected');
@@ -1379,7 +1380,7 @@ function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
         const item = event.target.closest('.todo__input');
-        if (item) input.blur();
+        if (item) item.blur();
         setTimeout(()=>{
             if (!item) return;
             item.setAttribute('draggable', 'true');
