@@ -765,6 +765,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "elements", ()=>elements);
 const elements = {
+    body: document.querySelector('body'),
     main: document.querySelector('.main'),
     todoWrapper: document.querySelector('.todo'),
     sortParamsWrapper: document.querySelector('.todos__sort_params'),
@@ -859,6 +860,10 @@ function changeTheme(event1, isClicked = true) {
         [
             (0, _elementsJs.elements).todoAddMark,
             'todo__mark--add--light'
+        ],
+        [
+            (0, _elementsJs.elements).body,
+            'body--light'
         ],
         [
             document.querySelector('.todo__smth') ? document.querySelector('.todo__smth') : null,
@@ -1047,9 +1052,10 @@ var _todoCountJs = require("../components/todoCount.js");
 var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
     if (event.key === 'Enter') {
-        addTodo(this.value, 'activeTodo');
         event.preventDefault();
-        (0, _elementsJs.elements).todoAddText.blur();
+        addTodo(this.value, 'activeTodo');
+        this.value = "";
+        (0, _elementsJs.elements).todoAddText.focus();
     }
 }
 function addTodo(text, className, id = null, isUpdate = true) {
@@ -1352,11 +1358,10 @@ function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
         const item = event.target.closest('.todo__input');
-        setTimeout(()=>{
-            if (!item) return;
-            item.setAttribute('draggable', 'true');
-            item.classList.add('selected');
-        }, 1000);
+        if (item) input.blur();
+        if (!item) return;
+        item.setAttribute('draggable', 'true');
+        item.classList.add('selected');
         item.style.border = '1px dashed #83aaf8ff';
     });
     (0, _elementsJs.elements).todosList.addEventListener("mouseup", (event)=>{
@@ -1374,6 +1379,7 @@ function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
         const item = event.target.closest('.todo__input');
+        if (item) input.blur();
         setTimeout(()=>{
             if (!item) return;
             item.setAttribute('draggable', 'true');
