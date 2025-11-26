@@ -715,14 +715,14 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"a0t4e":[function(require,module,exports,__globalThis) {
 var _events = require("./dom/events");
-var _todoDragJs = require("./components/todoDrag.js");
+var _dragEventsJs = require("./dom/dragEvents.js");
 var _elementsJs = require("./dom/elements.js");
 var _themeJs = require("./utils/theme.js");
 var _mediaJs = require("./utils/media.js");
 (function appInit() {
     document.addEventListener('DOMContentLoaded', (0, _themeJs.showTodosAndChangeTheme));
     (0, _events.attachEvents)();
-    (0, _todoDragJs.attachDragEvents)();
+    (0, _dragEventsJs.attachDragEvents)();
     // Initial Media Query Check
     (0, _elementsJs.elements).mediaQueryMobile.matches && (0, _mediaJs.handleMediaMobile)((0, _elementsJs.elements).mediaQueryMobile);
     // mobile design update at once
@@ -730,7 +730,7 @@ var _mediaJs = require("./utils/media.js");
 // tablet design update at once
 })();
 
-},{"./dom/events":"a9e30","./components/todoDrag.js":"7fwBX","./dom/elements.js":"ljsH5","./utils/theme.js":"fR0HC","./utils/media.js":"4BUOk"}],"a9e30":[function(require,module,exports,__globalThis) {
+},{"./dom/events":"a9e30","./dom/elements.js":"ljsH5","./utils/theme.js":"fR0HC","./utils/media.js":"4BUOk","./dom/dragEvents.js":"1MTMG"}],"a9e30":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "attachEvents", ()=>attachEvents);
@@ -1044,11 +1044,11 @@ var _animationsJs = require("../utils/animations.js");
 var _todoUpdateJs = require("./todoUpdate.js");
 var _todoSmthJs = require("./todoSmth.js");
 var _todoCountJs = require("../components/todoCount.js");
-var _mediaJs = require("../utils/media.js");
 var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
     if (event.key === 'Enter') {
         addTodo(this.value, 'activeTodo');
+        event.preventDefault();
         (0, _elementsJs.elements).todoAddText.blur();
     }
 }
@@ -1088,7 +1088,6 @@ function addTodo(text, className, id = null, isUpdate = true) {
     newTodo.classList.add('activeTodo');
     newTodo.classList.add('fadeIn');
     newTodo.setAttribute('data-id', id);
-    newTodo.setAttribute('draggable', 'true');
     if ((0, _elementsJs.elements).mediaQueryMobile.matches) newTodo.innerHTML = `
             <div class="todo__mark"></div>
             <input type="text" placeholder="Change your todo..." class="todo__text">
@@ -1115,7 +1114,6 @@ function addTodo(text, className, id = null, isUpdate = true) {
     (0, _elementsJs.elements).todosList.append(newTodo);
     (0, _todoUpdateJs.updateTodoSmth)('todo__input', 'todo__mark', 'todo__text');
     (0, _todoCountJs.todoCount)();
-    (0, _mediaJs.appendAllCross)();
     newTodo.scrollIntoView({
         block: "end"
     });
@@ -1152,7 +1150,7 @@ function addMarkAndDecorateText(mark) {
     localStorage.setItem('todoList', JSON.stringify(newTodoListStorage));
 }
 
-},{"../dom/elements.js":"ljsH5","../utils/animations.js":"2usXb","./todoUpdate.js":"fzcAu","./todoSmth.js":"liFvc","../components/todoCount.js":"6P2cI","../utils/media.js":"4BUOk","../components/todoSort.js":"feij6","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2usXb":[function(require,module,exports,__globalThis) {
+},{"../dom/elements.js":"ljsH5","../utils/animations.js":"2usXb","./todoUpdate.js":"fzcAu","./todoSmth.js":"liFvc","../components/todoCount.js":"6P2cI","../components/todoSort.js":"feij6","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2usXb":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "addAnimation", ()=>addAnimation);
@@ -1228,7 +1226,44 @@ function todoCount() {
     todoCounts.innerText = `${itemCount} items left`;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"4BUOk":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"5JURI":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "removeTodo", ()=>removeTodo);
+var _todoCount = require("./todoCount");
+var _todoSmth = require("./todoSmth");
+function removeTodo(cross) {
+    let todoInputs = document.querySelectorAll('.todo__input');
+    const todosList = document.querySelector('.todos__list');
+    const todoId = cross.parentNode.getAttribute('data-id');
+    cross.parentNode.classList.add('fadeOut');
+    setTimeout(()=>{
+        cross.parentNode.classList.remove('fadeOut');
+        // Delete node from localStorage
+        const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
+        const newstorageTodosList = storageTodosList.filter(([_, className, id])=>{
+            if (Number(todoId) !== Number(id)) return [
+                _,
+                className,
+                id
+            ];
+        });
+        localStorage.setItem('todoList', JSON.stringify([
+            ...newstorageTodosList
+        ]));
+        const removeTodoIndex = [
+            ...todoInputs
+        ].findIndex((todoInput)=>Number(todoInput.getAttribute('data-id')) === Number(todoId));
+        todoInputs[removeTodoIndex].remove(); // delete node from DOM
+        todoInputs = [
+            ...todoInputs
+        ].filter((_, index)=>index !== removeTodoIndex); // delete node from todoInputs
+        if (todosList.children.length === 0) (0, _todoSmth.createSmthField)("Add something...", 0);
+        (0, _todoCount.todoCount)();
+    }, 480);
+}
+
+},{"./todoCount":"6P2cI","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./todoSmth":"liFvc"}],"4BUOk":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleMediaTablet", ()=>handleMediaTablet);
@@ -1283,44 +1318,7 @@ function removeAllCross() {
     });
 }
 
-},{"../dom/elements.js":"ljsH5","../components/todoRemove.js":"5JURI","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"5JURI":[function(require,module,exports,__globalThis) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "removeTodo", ()=>removeTodo);
-var _todoCount = require("./todoCount");
-var _todoSmth = require("./todoSmth");
-function removeTodo(cross) {
-    let todoInputs = document.querySelectorAll('.todo__input');
-    const todosList = document.querySelector('.todos__list');
-    const todoId = cross.parentNode.getAttribute('data-id');
-    cross.parentNode.classList.add('fadeOut');
-    setTimeout(()=>{
-        cross.parentNode.classList.remove('fadeOut');
-        // Delete node from localStorage
-        const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
-        const newstorageTodosList = storageTodosList.filter(([_, className, id])=>{
-            if (Number(todoId) !== Number(id)) return [
-                _,
-                className,
-                id
-            ];
-        });
-        localStorage.setItem('todoList', JSON.stringify([
-            ...newstorageTodosList
-        ]));
-        const removeTodoIndex = [
-            ...todoInputs
-        ].findIndex((todoInput)=>Number(todoInput.getAttribute('data-id')) === Number(todoId));
-        todoInputs[removeTodoIndex].remove(); // delete node from DOM
-        todoInputs = [
-            ...todoInputs
-        ].filter((_, index)=>index !== removeTodoIndex); // delete node from todoInputs
-        if (todosList.children.length === 0) (0, _todoSmth.createSmthField)("Add something...", 0);
-        (0, _todoCount.todoCount)();
-    }, 480);
-}
-
-},{"./todoCount":"6P2cI","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./todoSmth":"liFvc"}],"2BjnI":[function(require,module,exports,__globalThis) {
+},{"../dom/elements.js":"ljsH5","../components/todoRemove.js":"5JURI","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2BjnI":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "changeTextInStorage", ()=>changeTextInStorage);
@@ -1341,45 +1339,70 @@ function changeTextInStorage() {
     localStorage.setItem('todoList', JSON.stringify(newTodoListStorage));
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7fwBX":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"1MTMG":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "attachDragEvents", ()=>attachDragEvents);
-var _elementsJs = require("../dom/elements.js");
-var _todoUpdateJs = require("./todoUpdate.js");
+var _elementsJs = require("./elements.js");
+var _todoUpdateJs = require("../components/todoUpdate.js");
 function attachDragEvents() {
-    (0, _elementsJs.elements).todosList.addEventListener('dragstart', (event)=>{
-        if (event.target.classList.contains('todo__input')) event.target.classList.add('selected');
-        event.target.style.border = '1px dashed #83aaf8ff';
+    (0, _elementsJs.elements).todosList.addEventListener('mousedown', (event)=>{
+        document.querySelectorAll(".todo__input").forEach((item)=>{
+            item.style.border = '1px solid transparent';
+            item.style.borderBottom = '1px solid #666666';
+        });
+        const item = event.target.closest('.todo__input');
+        setTimeout(()=>{
+            if (!item) return;
+            item.setAttribute('draggable', 'true');
+            item.classList.add('selected');
+        }, 1000);
+        item.style.border = '1px dashed #83aaf8ff';
     });
-    (0, _elementsJs.elements).todosList.addEventListener('dragend', (event)=>{
-        if (event.target.classList.contains('todo__input')) {
-            event.target.classList.remove('selected');
-            event.target.style.border = '1px solid transparent';
-            event.target.style.borderBottom = '1px solid #666666';
-            (0, _todoUpdateJs.saveOrder)();
-        }
+    (0, _elementsJs.elements).todosList.addEventListener("mouseup", (event)=>{
+        const item = event.target.closest(".todo__input");
+        if (!item) return;
+        item.classList.remove("selected");
+        item.removeAttribute("draggable");
+        item.style.border = '1px solid transparent';
+        item.style.borderBottom = '1px solid #666666';
+        (0, _todoUpdateJs.saveOrder)();
+    });
+    (0, _elementsJs.elements).todosList.addEventListener('touchstart', (event)=>{
+        document.querySelectorAll(".todo__input").forEach((item)=>{
+            item.style.border = '1px solid transparent';
+            item.style.borderBottom = '1px solid #666666';
+        });
+        const item = event.target.closest('.todo__input');
+        setTimeout(()=>{
+            if (!item) return;
+            item.setAttribute('draggable', 'true');
+            item.classList.add('selected');
+        }, 1000);
+        item.style.border = '1px dashed #83aaf8ff';
+    });
+    (0, _elementsJs.elements).todosList.addEventListener("touchend", (event)=>{
+        const item = event.target.closest(".todo__input");
+        if (!item) return;
+        item.classList.remove("selected");
+        item.removeAttribute("draggable");
+        item.style.border = '1px solid transparent';
+        item.style.borderBottom = '1px solid #666666';
+        (0, _todoUpdateJs.saveOrder)();
     });
     (0, _elementsJs.elements).todosList.addEventListener('dragover', (event)=>{
         event.preventDefault();
-        const selectedElement = document.querySelector('.selected');
-        const currentElement = event.target;
-        const itemHeight = selectedElement.offsetHeight;
-        const clientY = event.offsetY; // client Y position in element
-        if (selectedElement !== currentElement && currentElement.classList.contains('todo__input')) {
-            if (clientY < itemHeight / 2) {
-                // if client Y position < itemHeight / 2 -> add element before nextElementSibling
-                const nextElement = currentElement === selectedElement.nextElementSibling ? selectedElement.nextElementSibling : currentElement;
-                (0, _elementsJs.elements).todosList.insertBefore(nextElement, selectedElement);
-            } else {
-                // if client Y position >= itemHeight / 2 -> add element before previousElementSibling
-                const nextElement = currentElement === selectedElement.previousElementSibling ? selectedElement.previousElementSibling : currentElement;
-                (0, _elementsJs.elements).todosList.insertBefore(selectedElement, nextElement);
-            }
-        }
+        const selected = document.querySelector('.selected');
+        if (!selected) return;
+        const target = event.target.closest('.todo__input');
+        if (!target || selected === target) return;
+        const bounding = target.getBoundingClientRect();
+        const offset = event.clientY - bounding.top;
+        if (offset < bounding.height / 2) (0, _elementsJs.elements).todosList.insertBefore(selected, target);
+        else (0, _elementsJs.elements).todosList.insertBefore(selected, target.nextElementSibling);
     });
 }
 
-},{"../dom/elements.js":"ljsH5","./todoUpdate.js":"fzcAu","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["5j6Kf","a0t4e"], "a0t4e", "parcelRequireea3d", {})
+},{"./elements.js":"ljsH5","../components/todoUpdate.js":"fzcAu","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["5j6Kf","a0t4e"], "a0t4e", "parcelRequireea3d", {})
 
 //# sourceMappingURL=ToDo-JavaScript-.31b563d9.js.map
