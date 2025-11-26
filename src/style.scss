@@ -387,6 +387,7 @@ body {
             &_param {
                 cursor: pointer;
                 font-family: JosefinSans;
+                font-size: 0.9rem;
                 color: darken($color: #fff, $amount: 60%);
                 user-select: none;
                 border: 0;
@@ -396,6 +397,7 @@ body {
         &_clear {
             cursor: pointer;
             font-family: JosefinSans;
+            font-size: 0.9rem;
             color: darken($color: #fff, $amount: 60%);
             border: 0;
             background-color: transparent;
@@ -425,7 +427,7 @@ body {
             }
         }
         &__list {
-            max-height: 13.45rem;
+            max-height: 15rem;
         }
     }
 }
@@ -444,7 +446,7 @@ body {
             }
         }
         &__list {
-            max-height: 13.45rem;
+            max-height: 15rem;
         }
     }
 }

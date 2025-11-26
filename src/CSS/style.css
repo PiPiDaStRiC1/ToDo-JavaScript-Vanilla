@@ -368,6 +368,7 @@ body {
 .todos__sort_params_param {
   cursor: pointer;
   font-family: JosefinSans;
+  font-size: 0.9rem;
   color: #666666;
   user-select: none;
   border: 0;
@@ -376,6 +377,7 @@ body {
 .todos__sort_clear {
   cursor: pointer;
   font-family: JosefinSans;
+  font-size: 0.9rem;
   color: #666666;
   border: 0;
   background-color: transparent;
@@ -398,7 +400,7 @@ body {
     cursor: none;
   }
   .todos__list {
-    max-height: 13.45rem;
+    max-height: 15rem;
   }
 }
 @media (min-width: 0px) and (max-width: 468px) {
@@ -412,7 +414,7 @@ body {
     cursor: none;
   }
   .todos__list {
-    max-height: 13.45rem;
+    max-height: 15rem;
   }
 }
 .activeBtn {

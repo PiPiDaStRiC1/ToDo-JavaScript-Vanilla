@@ -19,6 +19,8 @@ export function addTodoWithEnter(event) {
 export function addTodo(text, className, id = null, isUpdate = true) {
     id =  Number(id) || Date.now();
     const todoText = document.querySelector('.todo__add_text');
+
+    document.activeElement?.blur();
     
     // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
     if (!elements.sortAllBtn.classList.contains('activeBtn') && isUpdate) {

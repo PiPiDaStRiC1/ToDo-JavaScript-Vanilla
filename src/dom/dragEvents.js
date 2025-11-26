@@ -11,9 +11,9 @@ export function attachDragEvents() {
 
         const item = event.target.closest('.todo__input');
         if (item) {
-            input.blur();
+            item.blur();
         }
-        
+
         if (!item) return;
 
         item.setAttribute('draggable', 'true');
@@ -45,7 +45,7 @@ export function attachDragEvents() {
         
         const item = event.target.closest('.todo__input');
         if (item) {
-            input.blur();
+            item.blur();
         }
         
         setTimeout(() => {
