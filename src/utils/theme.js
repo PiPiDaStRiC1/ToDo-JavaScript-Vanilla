@@ -25,6 +25,7 @@ export function changeTheme(event, isClicked = true) {
         [elements.todoAdd, 'todo__add--light'],
         [elements.todoAddText, 'todo__add_text--light'],
         [elements.todoAddMark, 'todo__mark--add--light'],
+        [elements.body, 'body--light'],
         [document.querySelector('.todo__smth') ? document.querySelector('.todo__smth') : null, 'todo__smth--light']
     ];
     const todoInputs = document.querySelectorAll('.todo__input');

@@ -19,6 +19,11 @@ body {
     height: 100vh;
     font-size: 10px;
     font-family: Josefin+Sans;
+    background-color: #000;
+}
+
+.body--light {
+    background-color: #fff;
 }
 
 * {
@@ -32,7 +37,6 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: #000;
     &::before {
         content: "";
         display: block;
@@ -54,6 +58,9 @@ body {
         }
     }
     &--tablet {
+        position: relative;
+        width: 100%;
+        height: 100%;
         background-color: #000;
         &::before {
             z-index: 10;

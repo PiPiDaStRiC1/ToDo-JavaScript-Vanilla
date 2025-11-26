@@ -1,4 +1,5 @@
 export const elements = {
+  body: document.querySelector('body'),
   main: document.querySelector('.main'),
   todoWrapper: document.querySelector('.todo'),
   sortParamsWrapper: document.querySelector('.todos__sort_params'),

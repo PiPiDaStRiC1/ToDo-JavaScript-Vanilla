@@ -10,14 +10,15 @@ export function attachDragEvents() {
         });
 
         const item = event.target.closest('.todo__input');
-            
-        setTimeout(() => {
-            if (!item) return;
+        if (item) {
+            input.blur();
+        }
+        
+        if (!item) return;
 
-            item.setAttribute('draggable', 'true');
-            item.classList.add('selected');
+        item.setAttribute('draggable', 'true');
+        item.classList.add('selected');
             
-        }, 1000)
         item.style.border = '1px dashed #83aaf8ff';
     });
 
@@ -41,8 +42,12 @@ export function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
 
+        
         const item = event.target.closest('.todo__input');
-            
+        if (item) {
+            input.blur();
+        }
+        
         setTimeout(() => {
             if (!item) return;
 

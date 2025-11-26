@@ -7,9 +7,12 @@ import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
     if (event.key === 'Enter') {
-        addTodo(this.value, 'activeTodo');
         event.preventDefault();
-        elements.todoAddText.blur();
+
+        addTodo(this.value, 'activeTodo');
+        this.value = "";
+
+        elements.todoAddText.focus();
     }
 }
 
