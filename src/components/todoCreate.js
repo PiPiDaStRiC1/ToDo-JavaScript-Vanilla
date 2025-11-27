@@ -6,19 +6,30 @@ import {todoCount} from '../components/todoCount.js';
 import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
-    if (event.key === "Enter" || 
-        event.keyCode === 13 || 
-        elements.mediaQueryMobile.matches && event.keyCode === 9
-    ) {
-        event.preventDefault();
-        
-        const input = this;
-        addTodo(input.value, 'activeTodo');
-        console.log(elements.mediaQueryMobile.matches, event.keyCode);
-        input.value = "";
+    const isMobile = elements.mediaQueryMobile.matches;
 
-        input.blur();
-        setTimeout(() => input.blur(), 80);
+    const isEnter =
+        event.key === "Enter" ||
+        event.keyCode === 13 ||
+        (isMobile && event.keyCode === 9);
+
+    if (!isEnter) return;
+
+    event.preventDefault();
+    event.stopPropagation(); 
+
+    const input = this;
+
+    addTodo(input.value, 'activeTodo');
+
+    input.value = "";
+    input.blur();
+
+    if (isMobile) {
+        setTimeout(() => input.blur(), 50);
+
+        input.setAttribute("readonly", "readonly");
+        setTimeout(() => input.removeAttribute("readonly"), 100);
     }
 }
 
@@ -26,7 +37,12 @@ export function addTodo(text, className, id = null, isUpdate = true) {
     id =  Number(id) || Date.now();
     const todoText = document.querySelector('.todo__add_text');
 
-    document.activeElement?.blur();
+    elements.todoAddText.setAttribute("readonly", "readonly");
+    elements.todoAddText.blur();
+
+    setTimeout(() => {
+        elements.todoAddText.removeAttribute("readonly");
+    }, 80);
     
     // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
     if (!elements.sortAllBtn.classList.contains('activeBtn') && isUpdate) {
