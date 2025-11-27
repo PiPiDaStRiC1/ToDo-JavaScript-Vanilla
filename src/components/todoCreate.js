@@ -8,11 +8,11 @@ import { sort } from '../components/todoSort.js';
 export function addTodoWithEnter(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
+        
+        elements.todoAddText.focus();
 
         addTodo(this.value, 'activeTodo');
         this.value = "";
-
-        elements.todoAddText.focus();
     }
 }
 
@@ -100,6 +100,7 @@ export function addTodo(text, className, id = null, isUpdate = true) {
         localStorage.setItem('todoList', JSON.stringify([...todoListStorage, [todoText.value, newTodo.classList.contains('activeTodo') ? 'activeTodo' : 'completedTodo', id]]));
         
         todoText.value = '';
+        document.activeElement?.blur();
         addAnimation(elements.todoAddMark);
     }
 }

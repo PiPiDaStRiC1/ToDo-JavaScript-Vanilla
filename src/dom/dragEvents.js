@@ -52,7 +52,7 @@ export function attachDragEvents() {
 
         item.style.border = '1px solid transparent';
         item.style.borderBottom = '1px solid #666666';
-       
+          
         flushSave();
     });
 
@@ -65,13 +65,13 @@ export function attachDragEvents() {
 
         
         const item = event.target.closest('.todo__input');
-        if (item) {
-            item.blur();
-        }
+        const itemInput = item.closest('.todo__text');
+        itemInput?.blur();
         
         setTimeout(() => {
             if (!item) return;
 
+            itemInput?.setAttribute('readonly');
             item.setAttribute('draggable', 'true');
             item.classList.add('selected');
             
@@ -83,8 +83,13 @@ export function attachDragEvents() {
         const item = event.target.closest(".todo__input");
         if (!item) return;
 
-        item.classList.remove("selected");
+        const itemInput = item.closest('.todo__text');
+        itemInput?.blur();
+        
+
+        itemInput?.removeAttribute('readonly');
         item.removeAttribute("draggable");
+        item.classList.remove("selected");
 
         item.style.border = '1px solid transparent';
         item.style.borderBottom = '1px solid #666666';
