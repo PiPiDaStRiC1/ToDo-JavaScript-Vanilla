@@ -1053,9 +1053,9 @@ var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
+        (0, _elementsJs.elements).todoAddText.focus();
         addTodo(this.value, 'activeTodo');
         this.value = "";
-        (0, _elementsJs.elements).todoAddText.focus();
     }
 }
 function addTodo(text, className, id = null, isUpdate = true) {
@@ -1136,6 +1136,7 @@ function addTodo(text, className, id = null, isUpdate = true) {
             ]
         ]));
         todoText.value = '';
+        document.activeElement?.blur();
         (0, _animationsJs.addAnimation)((0, _elementsJs.elements).todoAddMark);
     }
 }
@@ -1398,9 +1399,11 @@ function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
         const item = event.target.closest('.todo__input');
-        if (item) item.blur();
+        const itemInput = item.closest('.todo__text');
+        itemInput?.blur();
         setTimeout(()=>{
             if (!item) return;
+            itemInput?.setAttribute('readonly');
             item.setAttribute('draggable', 'true');
             item.classList.add('selected');
         }, 1000);
@@ -1409,8 +1412,11 @@ function attachDragEvents() {
     (0, _elementsJs.elements).todosList.addEventListener("touchend", (event)=>{
         const item = event.target.closest(".todo__input");
         if (!item) return;
-        item.classList.remove("selected");
+        const itemInput = item.closest('.todo__text');
+        itemInput?.blur();
+        itemInput?.removeAttribute('readonly');
         item.removeAttribute("draggable");
+        item.classList.remove("selected");
         item.style.border = '1px solid transparent';
         item.style.borderBottom = '1px solid #666666';
         flushSave();
