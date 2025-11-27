@@ -1049,10 +1049,11 @@ var _todoSmthJs = require("./todoSmth.js");
 var _todoCountJs = require("../components/todoCount.js");
 var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" || event.keyCode === 13 || (0, _elementsJs.elements).mediaQueryMobile.matches && event.keyCode === 9) {
         event.preventDefault();
         const input = this;
         addTodo(input.value, 'activeTodo');
+        console.log((0, _elementsJs.elements).mediaQueryMobile.matches, event.keyCode);
         input.value = "";
         input.blur();
         setTimeout(()=>input.blur(), 80);
