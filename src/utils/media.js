@@ -1,6 +1,19 @@
 import {elements} from '../dom/elements.js';
 import {removeTodo} from '../components/todoRemove.js';
 
+
+function createFooterText() {
+    const footerText = document.createElement('p');
+    footerText.classList.add('todo__footer_text');
+    footerText.textContent = 'Drag and drop to reorder list';
+    return footerText;
+}
+
+function removeFooterText() {
+    const footerText = document.querySelectorAll('.todo__footer_text');
+    footerText.forEach(text => text.remove());
+}
+
 export function handleMediaTablet(media) {
     const theme = localStorage.getItem('theme');
 
@@ -29,11 +42,12 @@ export function handleMediaMobile(media) {
     if (media.matches) {
         elements.sortParamsWrapper.classList.add('todo__params');
         elements.todoWrapper.append(elements.sortParamsWrapper);
-        elements.todoWrapper.append(elements.footerText);
+        removeFooterText();
         appendAllCross();
     } else {
         elements.sortParamsWrapper.classList.remove('todo__params');
         elements.todosSort.insertBefore(elements.sortParamsWrapper, elements.sortCompletedClear);
+        elements.todoWrapper.append(createFooterText());
         removeAllCross();
     }
 };

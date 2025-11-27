@@ -43,8 +43,7 @@ export function sort() {
 
     createSmthField(smthFieldText, inputCount);
 
-    elements.mediaQueryMobile.matches ? elements.todosList.after(elements.todosSort) : elements.todoWrapper.append(elements.todosSort);
-    elements.todoWrapper.append(elements.footerText);
+    elements.todosList.after(elements.todosSort);
 }
 
 export function clearCompleted() {
@@ -71,8 +70,7 @@ export function clearCompleted() {
         }
     });
     createSmthField("Add something...", inputCount);
-    elements.mediaQueryMobile.matches ? elements.todosList.after(elements.todosSort) : elements.todoWrapper.append(elements.todosSort);
-    elements.todoWrapper.append(elements.footerText);
+    elements.todosList.after(elements.todosSort);
 
     localStorage.setItem('activeSortBtn', JSON.stringify('sort__param--all'));
     resetParamBtns(); 

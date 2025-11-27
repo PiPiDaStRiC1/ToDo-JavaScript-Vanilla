@@ -207,6 +207,9 @@ body {
         padding: 1.2rem;
         color: #fff;
         font-size: 0.9rem;
+        -webkit-box-shadow: 5px 4px 10px 5px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow: 5px 4px 10px 5px rgba(34, 60, 80, 0.2);
+        box-shadow: 5px 4px 10px 5px rgba(10, 10, 10, 0.2);
         color: darken($color: #fff, $amount: 60%);
         &--light {
             background-color: var(--inputColorLight);

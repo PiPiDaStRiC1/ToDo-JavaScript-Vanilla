@@ -6,13 +6,15 @@ import {todoCount} from '../components/todoCount.js';
 import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
-    if (event.keyCode === 13) {
+    if (event.key === "Enter") {
         event.preventDefault();
 
-        addTodo(this.value, 'activeTodo');
-        this.value = "";
+        const input = this;
+        addTodo(input.value, 'activeTodo');
+        input.value = "";
 
-        elements.todoAddText.focus();
+        input.blur();
+        setTimeout(() => input.blur(), 80);
     }
 }
 
@@ -101,6 +103,9 @@ export function addTodo(text, className, id = null, isUpdate = true) {
         
         todoText.value = '';
         addAnimation(elements.todoAddMark);
+    
+        todoText.blur();
+        setTimeout(() => todoText.blur(), 120);
     }
 }
 
