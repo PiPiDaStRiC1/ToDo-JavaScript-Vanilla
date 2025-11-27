@@ -6,11 +6,15 @@ import {todoCount} from '../components/todoCount.js';
 import { sort } from '../components/todoSort.js';
 
 export function addTodoWithEnter(event) {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" || 
+        event.keyCode === 13 || 
+        elements.mediaQueryMobile.matches && event.keyCode === 9
+    ) {
         event.preventDefault();
-
+        
         const input = this;
         addTodo(input.value, 'activeTodo');
+        console.log(elements.mediaQueryMobile.matches, event.keyCode);
         input.value = "";
 
         input.blur();
