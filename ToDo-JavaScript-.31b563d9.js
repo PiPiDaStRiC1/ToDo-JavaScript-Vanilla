@@ -978,8 +978,7 @@ function sort() {
         }
     });
     (0, _todoSmthJs.createSmthField)(smthFieldText, inputCount);
-    (0, _elementsJs.elements).mediaQueryMobile.matches ? (0, _elementsJs.elements).todosList.after((0, _elementsJs.elements).todosSort) : (0, _elementsJs.elements).todoWrapper.append((0, _elementsJs.elements).todosSort);
-    (0, _elementsJs.elements).todoWrapper.append((0, _elementsJs.elements).footerText);
+    (0, _elementsJs.elements).todosList.after((0, _elementsJs.elements).todosSort);
 }
 function clearCompleted() {
     const todoInputs = document.querySelectorAll('.todo__input');
@@ -1006,8 +1005,7 @@ function clearCompleted() {
         }
     });
     (0, _todoSmthJs.createSmthField)("Add something...", inputCount);
-    (0, _elementsJs.elements).mediaQueryMobile.matches ? (0, _elementsJs.elements).todosList.after((0, _elementsJs.elements).todosSort) : (0, _elementsJs.elements).todoWrapper.append((0, _elementsJs.elements).todosSort);
-    (0, _elementsJs.elements).todoWrapper.append((0, _elementsJs.elements).footerText);
+    (0, _elementsJs.elements).todosList.after((0, _elementsJs.elements).todosSort);
     localStorage.setItem('activeSortBtn', JSON.stringify('sort__param--all'));
     (0, _todoUpdateJs.resetParamBtns)();
     // Reverse to All btn
@@ -1051,11 +1049,13 @@ var _todoSmthJs = require("./todoSmth.js");
 var _todoCountJs = require("../components/todoCount.js");
 var _todoSortJs = require("../components/todoSort.js");
 function addTodoWithEnter(event) {
-    if (event.keyCode === 13) {
+    if (event.key === "Enter") {
         event.preventDefault();
-        (0, _elementsJs.elements).todoAddText.focus();
-        addTodo(this.value, 'activeTodo');
-        this.value = "";
+        const input = this;
+        addTodo(input.value, 'activeTodo');
+        input.value = "";
+        input.blur();
+        setTimeout(()=>input.blur(), 80);
     }
 }
 function addTodo(text, className, id = null, isUpdate = true) {
@@ -1136,8 +1136,9 @@ function addTodo(text, className, id = null, isUpdate = true) {
             ]
         ]));
         todoText.value = '';
-        document.activeElement?.blur();
         (0, _animationsJs.addAnimation)((0, _elementsJs.elements).todoAddMark);
+        todoText.blur();
+        setTimeout(()=>todoText.blur(), 120);
     }
 }
 function addMarkAndDecorateText(mark) {
@@ -1280,6 +1281,16 @@ parcelHelpers.export(exports, "appendAllCross", ()=>appendAllCross);
 parcelHelpers.export(exports, "removeAllCross", ()=>removeAllCross);
 var _elementsJs = require("../dom/elements.js");
 var _todoRemoveJs = require("../components/todoRemove.js");
+function createFooterText() {
+    const footerText = document.createElement('p');
+    footerText.classList.add('todo__footer_text');
+    footerText.textContent = 'Drag and drop to reorder list';
+    return footerText;
+}
+function removeFooterText() {
+    const footerText = document.querySelectorAll('.todo__footer_text');
+    footerText.forEach((text)=>text.remove());
+}
 function handleMediaTablet(media) {
     const theme = localStorage.getItem('theme');
     switch(true){
@@ -1303,11 +1314,12 @@ function handleMediaMobile(media) {
     if (media.matches) {
         (0, _elementsJs.elements).sortParamsWrapper.classList.add('todo__params');
         (0, _elementsJs.elements).todoWrapper.append((0, _elementsJs.elements).sortParamsWrapper);
-        (0, _elementsJs.elements).todoWrapper.append((0, _elementsJs.elements).footerText);
+        removeFooterText();
         appendAllCross();
     } else {
         (0, _elementsJs.elements).sortParamsWrapper.classList.remove('todo__params');
         (0, _elementsJs.elements).todosSort.insertBefore((0, _elementsJs.elements).sortParamsWrapper, (0, _elementsJs.elements).sortCompletedClear);
+        (0, _elementsJs.elements).todoWrapper.append(createFooterText());
         removeAllCross();
     }
 }
@@ -1378,7 +1390,7 @@ function attachDragEvents() {
             item.style.borderBottom = '1px solid #666666';
         });
         const item = event.target.closest('.todo__input');
-        if (item) item.blur();
+        item?.blur();
         if (!item) return;
         item.setAttribute('draggable', 'true');
         item.classList.add('selected');
@@ -1393,34 +1405,29 @@ function attachDragEvents() {
         item.style.borderBottom = '1px solid #666666';
         flushSave();
     });
-    (0, _elementsJs.elements).todosList.addEventListener('touchstart', (event)=>{
-        document.querySelectorAll(".todo__input").forEach((item)=>{
-            item.style.border = '1px solid transparent';
-            item.style.borderBottom = '1px solid #666666';
-        });
-        const item = event.target.closest('.todo__input');
-        const itemInput = item.closest('.todo__text');
-        itemInput?.blur();
-        setTimeout(()=>{
-            if (!item) return;
-            itemInput?.setAttribute('readonly');
-            item.setAttribute('draggable', 'true');
-            item.classList.add('selected');
-        }, 1000);
-        item.style.border = '1px dashed #83aaf8ff';
-    });
-    (0, _elementsJs.elements).todosList.addEventListener("touchend", (event)=>{
-        const item = event.target.closest(".todo__input");
-        if (!item) return;
-        const itemInput = item.closest('.todo__text');
-        itemInput?.blur();
-        itemInput?.removeAttribute('readonly');
-        item.removeAttribute("draggable");
-        item.classList.remove("selected");
-        item.style.border = '1px solid transparent';
-        item.style.borderBottom = '1px solid #666666';
-        flushSave();
-    });
+    /* Mobile Drag-and-Drop */ // elements.todosList.addEventListener('touchstart', (event) => {
+    //     document.querySelectorAll(".todo__input").forEach((item) => {
+    //         item.style.border = '1px solid transparent';
+    //         item.style.borderBottom = '1px solid #666666';
+    //     });
+    //     const item = event.target.closest('.todo__input');
+    //     item?.blur();
+    //     setTimeout(() => {
+    //         if (!item) return;
+    //         item.setAttribute('draggable', 'true');
+    //         item.classList.add('selected');
+    //     }, 1000)
+    //     item.style.border = '1px dashed #83aaf8ff';
+    // });
+    // elements.todosList.addEventListener("touchend", (event) => {
+    //     const item = event.target.closest(".todo__input");
+    //     if (!item) return;
+    //     item.removeAttribute("draggable");
+    //     item.classList.remove("selected");
+    //     item.style.border = '1px solid transparent';
+    //     item.style.borderBottom = '1px solid #666666';
+    //     flushSave();
+    // });
     (0, _elementsJs.elements).todosList.addEventListener('dragstart', (e)=>{
         const item = e.target.closest('.todo__input');
         if (!item) return;

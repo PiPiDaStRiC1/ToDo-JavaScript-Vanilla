@@ -207,12 +207,15 @@ body {
 .todo__params {
   background-color: var(--inputColor);
   color: #666;
+  -webkit-box-shadow: 5px 4px 10px 5px #223c5033;
+  -moz-box-shadow: 5px 4px 10px 5px #223c5033;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
   padding: 1.2rem;
   font-size: .9rem;
   display: flex;
+  box-shadow: 5px 4px 10px 5px #0a0a0a33;
 }
 
 .todo__params--light {
